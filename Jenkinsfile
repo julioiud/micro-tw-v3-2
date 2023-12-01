@@ -31,7 +31,7 @@ pipeline {
                             string(credentialsId: 'MONGO_URI', variable: 'MONGO_URI')
                     ]) {
                         sh """
-                            docker-compose -f docker-compose-update.yml up -d
+                            docker-compose -f docker-compose.yml up -d
                         """
                     }
                 }
