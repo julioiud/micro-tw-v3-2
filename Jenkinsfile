@@ -14,7 +14,7 @@ pipeline {
             }
         }
 
-        /*stage('Construir image de docker'){
+        stage('Construir image de docker'){
             steps {
                     script {
                         withCredentials([
@@ -26,7 +26,7 @@ pipeline {
                         }
                     }
                 }
-        }*/
+        }
 
         stage('Desplegar contenedor docker') {
             steps {
@@ -35,7 +35,7 @@ pipeline {
                             string(credentialsId: 'MONGO_URI', variable: 'MONGO_URI')
                         ]) {
                             sh """
-                                docker-compose -f docker-compose.yml up -d -e MONGO_URI=${MONGO_URI} -e PORT=4002
+                                 docker run -e MONGO_URI=${MONGO_URI} -e PORT=4002 proyectos-micros:v1
                             """  
                         }
                     }
