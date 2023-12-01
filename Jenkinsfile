@@ -14,17 +14,19 @@ pipeline {
             }
         }
 
-        /*stage('Construir image de docker'){
+        stage('Construir image de docker'){
             steps {
                     script {
                         withCredentials([
                             string(credentialsId: 'MONGO_URI', variable: 'MONGO_URI')
                         ]) {
-                                docker.build('proyectos-micros:v1', "--build-arg MONGO_URI=${MONGO_URI} .")   
-                            }
+                            sh """
+                                docker-compose build -t .
+                            """  
+                        }
                     }
                 }
-        }*/
+        }
 
         stage('Desplegar contenedor docker') {
             steps {
