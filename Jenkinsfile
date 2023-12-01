@@ -30,10 +30,10 @@ pipeline {
             steps {
                     script {
              
-                               sh """
-                                sed '${MONGO_URI}' docker-compose.yml > docker-compose-updated.yml
-                                docker-compose -f docker-compose-updated.yml up -d
-                               """  
+                        sh """
+                            sed 's|\\${MONGO_URI}|${MONGO_URI}|g' docker-compose.yml > docker-compose-updated.yml
+                            docker-compose -f docker-compose-updated.yml up -d
+                        """  
                             
                     }
             }
