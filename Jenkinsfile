@@ -35,7 +35,7 @@ pipeline {
                             string(credentialsId: 'MONGO_URI', variable: 'MONGO_URI')
                         ]) {
                             sh """
-                                docker-compose -f docker-compose.yml up -d -e MONGO_URI=mongodb+srv://admin:OILvBIWglcWSfHbE@cluster0.z1tne3j.mongodb.net/ -e PORT=4002
+                                docker-compose -f docker-compose.yml up -d -e MONGO_URI=${MONGO_URI} -e PORT=4002
                             """  
                         }
                     }
