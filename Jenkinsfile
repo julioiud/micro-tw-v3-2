@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    
+    environment {
+        MONGO_URI = credentials('MONGO_URI')
+    }
 
     stages {
         stage('Clonar repositorio'){
@@ -25,14 +29,12 @@ pipeline {
         stage('Desplegar contenedor docker') {
             steps {
                     script {
-                        withCredentials([
-                            string(credentialsId: 'MONGO_URI', variable: 'MONGO_URI')
-                        ]) {
+             
                                sh """
                                 sed '${MONGO_URI}' docker-compose.yml > docker-compose-updated.yml
                                 docker-compose -f docker-compose-updated.yml up -d
                                """  
-                            }
+                            
                     }
             }
         }
