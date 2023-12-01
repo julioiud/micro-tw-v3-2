@@ -38,7 +38,7 @@ pipeline {
         }
     }
 
-    post {
+    /*post {
         always {
             emailext {
                 subject: "Estado del build: ${currentBuild.currentResult}",
@@ -48,5 +48,5 @@ pipeline {
                 from: 'jenkins@iudigital.edu.co'
             }
         }
-    }
+    }*/
 }
