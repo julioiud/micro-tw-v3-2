@@ -31,13 +31,11 @@ pipeline {
         stage('Desplegar contenedor docker') {
             steps {
                     script {
-                        withCredentials([
-                            string(credentialsId: 'MONGO_URI', variable: 'MONGO_URI')
-                        ]) {
+
                             sh """
                                 docker-compose -f docker-compose.yml up -d proyectos-micros -e MONGO_URI=${MONGO_URI} -e PORT=4002
                             """  
-                        }
+                        
                     }
             }
         }
