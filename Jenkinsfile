@@ -2,22 +2,28 @@ pipeline {
     agent any
 
     stages {
-        stage('Clonar el Repositorio'){
+        stage('Clonar repositorio'){
             steps {
-                git branch: 'main', credentialsId: 'git-jenkins', url: 'https://github.com/julioiud/node-jenkins.git'
+                git branch: 'main', 
+                credentialsId: 'git-jenkins', 
+                url: 'https://github.com/julioiud/micro-tw-v3-2.git'
             }
         }
-        stage('Construir imagen de Docker'){
+
+        stage('Construir image de docker'){
             steps {
-                script {
-                    withCredentials([
-                        string(credentialsId: 'MONGO_URI', variable: 'MONGO_URI')
-                    ]) {
-                        docker.build('proyectos-micros:v1', '--build-arg MONGO_URI=${MONGO_URI} .')
+                    script {
+                        withCredentials([
+                            string(credentialsId: 'MONGO_URI', variable: 'MONGO_URI')
+                        ]) {
+                            sh """
+                                docker-compose -f docker-compose.yml build proyectos-micros
+                            """  
+                        }
                     }
                 }
-            }
         }
+
         stage('Desplegar contenedores Docker'){
             steps {
                 script {
@@ -25,8 +31,7 @@ pipeline {
                             string(credentialsId: 'MONGO_URI', variable: 'MONGO_URI')
                     ]) {
                         sh """
-                            sed 's|\\${MONGO_URI}|${MONGO_URI}|g' docker-compose.yml > docker-compose-update.yml
-                            docker-compose -f docker-compose-update.yml up -d
+                            docker-compose -f docker-compose-update.yml up -d -e MONGO_URI=${MONGO_URI} -e PORT=4002
                         """
                     }
                 }
