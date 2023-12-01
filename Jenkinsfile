@@ -10,7 +10,7 @@ pipeline {
             }
         }
 
-        stage('Construir image de docker'){
+        /*stage('Construir image de docker'){
             steps {
                     script {
                         withCredentials([
@@ -20,7 +20,7 @@ pipeline {
                             }
                     }
                 }
-        }
+        }*/
 
         stage('Desplegar contenedor docker') {
             steps {
