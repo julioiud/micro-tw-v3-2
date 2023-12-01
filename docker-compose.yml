@@ -9,8 +9,6 @@ services :
       - "4002:4002"
     networks : 
       - proyectos-app
-    enviroment:
-      - MONGO_URI=mongodb+srv://admin:OILvBIWglcWSfHbE@cluster0.z1tne3j.mongodb.net/
-      - PORT=4002
+      
 networks :
   proyectos-app :
