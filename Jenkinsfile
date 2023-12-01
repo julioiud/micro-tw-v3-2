@@ -16,7 +16,9 @@ pipeline {
                         withCredentials([
                             string(credentialsId: 'MONGO_URI', variable: 'MONGO_URI')
                         ]) {
-                            docker.build('proyectos-backend-micro:v1', '--build-arg MONGO_URI=${MONGO_URI} .')
+                            sh """
+                                docker-compose -f docker-compose.yml build proyectos-micros --build-arg MONGO_URI=${MONGO_URI}
+                            """  
                         }
                     }
                 }
