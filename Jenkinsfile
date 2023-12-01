@@ -2,28 +2,22 @@ pipeline {
     agent any
 
     stages {
-        stage('Clonar repositorio'){
+        stage('Clonar el Repositorio'){
             steps {
-                git branch: 'main', 
-                credentialsId: 'git-jenkins', 
-                url: 'https://github.com/julioiud/micro-tw-v3-2.git'
+                git branch: 'main', credentialsId: 'git-jenkins', url: 'https://github.com/julioiud/node-jenkins.git'
             }
         }
-
-        stage('Construir image de docker'){
+        stage('Construir imagen de Docker'){
             steps {
-                    script {
-                        withCredentials([
-                            string(credentialsId: 'MONGO_URI', variable: 'MONGO_URI')
-                        ]) {
-                            sh """
-                                docker-compose -f docker-compose.yml build proyectos-micros --build-arg MONGO_URI=${MONGO_URI}
-                            """  
-                        }
+                script {
+                    withCredentials([
+                        string(credentialsId: 'MONGO_URI', variable: 'MONGO_URI')
+                    ]) {
+                        docker.build('proyectos-micros:v1', '--build-arg MONGO_URI=${MONGO_URI} .')
                     }
                 }
+            }
         }
-
         stage('Desplegar contenedores Docker'){
             steps {
                 script {
