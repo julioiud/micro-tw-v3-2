@@ -1,9 +1,5 @@
 pipeline {
     agent any
-    
-    environment {
-        MONGO_URI = credentials('MONGO_URI')
-    }
 
     stages {
         stage('Clonar repositorio'){
@@ -28,30 +24,19 @@ pipeline {
                 }
         }
 
-        stage('Desplegar contenedor docker') {
+        stage('Desplegar contenedores Docker'){
             steps {
-                    script {
-                        withCredentials([
+                script {
+                    withCredentials([
                             string(credentialsId: 'MONGO_URI', variable: 'MONGO_URI')
-                        ]) {
-                            sh """
-                                docker-compose -f docker-compose.yml up -d -e MONGO_URI=${MONGO_URI} -e PORT=4002
-                            """  
-                        }
+                    ]) {
+                        sh """
+                            sed 's|\\${MONGO_URI}|${MONGO_URI}|g' docker-compose.yml > docker-compose-update.yml
+                            docker-compose -f docker-compose-update.yml up -d
+                        """
                     }
+                }
             }
         }
     }
-
-    /*post {
-        always {
-            emailext {
-                subject: "Estado del build: ${currentBuild.currentResult}",
-                body: "Se ha completado el build, accede a los detalles en ${env.BUILD_URL}",
-                to: 'dcmr34012@gmail.com',
-                cc: 'L3garda@gmail.com',
-                from: 'jenkins@iudigital.edu.co'
-            }
-        }
-    }*/
 }
