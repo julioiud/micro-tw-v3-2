@@ -17,7 +17,7 @@ pipeline {
                             string(credentialsId: 'MONGO_URI', variable: 'MONGO_URI')
                         ]) {
                             sh """
-                                docker-compose -f docker-compose.yml build proyectos-micros
+                                docker-compose -f docker-compose.yml build proyectos-micros -e MONGO_URI=${MONGO_URI} -e PORT=4002
                             """  
                         }
                     }
@@ -31,7 +31,7 @@ pipeline {
                             string(credentialsId: 'MONGO_URI', variable: 'MONGO_URI')
                     ]) {
                         sh """
-                            docker-compose -f docker-compose-update.yml up -d -e MONGO_URI=${MONGO_URI} -e PORT=4002
+                            docker-compose -f docker-compose-update.yml up -d
                         """
                     }
                 }
